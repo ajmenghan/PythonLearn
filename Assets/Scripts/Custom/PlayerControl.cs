@@ -1,0 +1,69 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerControl : MonoBehaviour {
+
+    private Animator animator;
+    private Vector3[] directions; //方向向量
+    private bool bMove = false; //是否正在移动
+    private Vector3 targetPos = Vector3.zero; //目标位置
+    private int dir; //移动方向
+    void Start()
+    {
+        animator = GetComponentInChildren<Animator>();
+        directions = new Vector3[4] {new Vector3(0, 0, 1), new Vector3(0, 0, -1),
+            new Vector3(1,0,0), new Vector3(-1, 0, 0) };
+    }
+    void Update()
+    {
+        if(bMove) move();
+    }
+    //外面调用,向dir方向移动step步
+    public void Move(int dir,int step)
+    {
+        this.dir = dir;
+        if (dir > 1) transform.localScale = new Vector3((dir == 3 ? -1 : 1), 1, 1); //左右转向
+        if (targetPos == Vector3.zero) targetPos = transform.position + directions[dir] * 16 * step;
+        animator.Play("Move");
+        bMove = true;
+    }
+    public void Move(Vector2Int tar)
+    {
+        Vector2Int[] points = new Vector2Int[2];
+        points[0].x = (tar.x> 0 ? 2 : 3);
+        points[0].y = Mathf.Abs(tar.x);
+        points[1].x = (tar.y > 0 ? 0 : 1);
+        points[1].y = Mathf.Abs(tar.y);
+        StartCoroutine("move", points);
+        bMove = true;
+    }
+    //沿着一系列（dir，step）移动
+    private IEnumerator move(Vector2Int[] points)
+    {
+        for (int i = 0; i < points.Length; i++) 
+        {
+            this.Move(points[i].x, points[i].y);
+            //print(points[i].x+" "+ points[i].y);
+            yield return new WaitUntil(() => !bMove);
+        }
+    }
+    private void move()
+    {
+        transform.position = 
+            Vector3.MoveTowards(transform.position, targetPos, 20 * Time.deltaTime);
+        if (Vector3.Distance(transform.position, targetPos) < 0.01f)
+        {
+            bMove = false;
+            transform.position = targetPos;
+            targetPos = Vector3.zero;
+            animator.Play("Stand");
+            
+        }
+        //print(animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+    }
+    public void Attack()
+    {
+
+    }
+}
