@@ -1,0 +1,54 @@
+{
+  "array": [
+    {
+      "type": "function",
+      "array": [
+        {
+          "id": 10,
+          "body": "hero.moveUp",
+          "bNeedPara": true,
+          "type": -1
+        }
+      ]
+    },
+    {
+      "type": "variable",
+      "array": [
+        {
+          "id": 20,
+          "body": "enemy",
+          "bNeedPara": true,
+          "type": 1
+        }
+      ]
+    },
+    {
+      "type": "module",
+      "array": [
+        {
+          "id": 30,
+          "body": "if",
+          "bNeedPara": true,
+          "type": -1
+        },
+        {
+          "id": 31,
+          "body": "while",
+          "bNeedPara": true,
+          "type": -1
+        }
+      ]
+    },
+    {
+      "type": "symbol",
+      "array": [
+        {
+          "id": 40,
+          "body": "#",
+          "bNeedPara": true,
+          "type": -1
+        }
+      ]
+    }
+  ]
+}

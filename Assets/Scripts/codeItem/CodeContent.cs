@@ -6,48 +6,65 @@ using UnityEngine.UI;
 public class CodeContent : MonoBehaviour {
     //code区域需要进行的操作
     private InputField _paraInputField; //参数输入框
-    private GameObject _itemPre; //当前正在添加的code对象
+    private CodeItem _item; //当前正在添加的code对象
 
     public void OnEndInput(string value)
     {
         _paraInputField.GetComponent<CanvasGroup>().alpha = 0;
         _paraInputField.GetComponent<CanvasGroup>().blocksRaycasts = false;
         _paraInputField.text = "";  
-        if (null == _itemPre) return;
+        if (null == _item) return;
         CreateItem(value);
     }
 
     //在最后一行添加code对象
-    public void AddCodeItem(int id)
+    public void AddCodeItem(int id,string value = null)
     {
         //根据id在code区域生成对应code对象
-        _itemPre = DataControl.Instance.GetCodeItemById(id);  
+        _item = DataControl.Instance.GetCodeItemById(id);  
         //如果需要参数则首先生成输入框，否则直接生成code对象
-        if (_itemPre.GetComponent<CodeItemBase>().bNeedPara)
+        if (_item.bNeedPara && value == null)
         {
             _paraInputField = UIManager.Instance.ShowInputFiled(delegate { this.OnEndInput(_paraInputField.text); });            
             return;
         }
-        CreateItem();
+        CreateItem(value);
     }
     //创建item对象
     private void CreateItem(string value = null)
     {
-        GameObject item = Instantiate(_itemPre, this.transform);
+        GameObject pre = null;
+        if (_item.id < 30 || _item.id > 39) pre = Resources.Load("Prefabs/CodeItem/codeItem") as GameObject;
+        else pre = Resources.Load("Prefabs/CodeItem/contentItem") as GameObject;
+        GameObject item = Instantiate(pre, this.transform);
+        if (_item.id < 20) item.AddComponent<FuncCodeItem>();
+        else if (_item.id < 30) item.AddComponent<VarCodeItem>();
+        else if (_item.id < 40) item.GetComponentInChildren<CodeContent>().transform.GetChild(0).gameObject.AddComponent<ModCodeItem>();
+        else item.AddComponent<CodeItemBase>();
         //this.UpdateList();
-        if (value != null) item.GetComponent<CodeItemBase>().SetContent("(" + value + ")");
+        if (value != null)
+        {
+            item.GetComponentInChildren<CodeItemBase>().Init(_item);
+            item.GetComponentInChildren<CodeItemBase>().SetContent(value);
+            if (item.GetComponentInChildren<CodeContent>() != null)  //模块则同时增加提示语句
+                item.GetComponentInChildren<CodeContent>().AddCodeItem(40, "点击输入模块逻辑");
+        }
         UIManager.Instance.UpdateContents();
     }
     //移除对应位置的code对象
     public void RemoveCodeItem(CodeItemBase item)
     {
         DestroyImmediate(item.gameObject);
+        //如果已经没有子物体则自动清除
+        if (transform.childCount == 0 && transform.parent.tag == GlobalValue.TAGS[(int)TAG.CODEITEM])
+            DestroyImmediate(transform.parent.gameObject);
         //this.UpdateList();
         UIManager.Instance.UpdateContents();
     }
     //更新列表显示
     public void UpdateList()
     {
+        if (transform.childCount == 0) return;
         float initialPosy = -0f; 
         for (int i = 0; i < transform.childCount; i++) 
         {
@@ -87,7 +104,7 @@ public class CodeContent : MonoBehaviour {
         UIManager.Instance.CurrentCodeContent = this;
         CanvasGroup surface = transform.parent.Find("surface").GetComponent<CanvasGroup>();
         CanvasGroup bg = transform.parent.Find("bg").GetComponent<CanvasGroup>();
-        surface.alpha = 0;
+        //surface.alpha = 0;
         surface.blocksRaycasts = false;
         bg.alpha = 1;
         bg.blocksRaycasts = true;
@@ -100,15 +117,24 @@ public class CodeContent : MonoBehaviour {
         CanvasGroup bg = transform.parent.Find("bg").GetComponent<CanvasGroup>();
         bg.alpha = 0;
         bg.blocksRaycasts = false;
-        surface.alpha = 1;
+        //surface.alpha = 1;
         surface.blocksRaycasts = true;
     }
     //将自身包含的code对象转换成指令
-    public CodeItemBase[] ParseToCommonds()
+    public Dictionary<CodeItemBase, int> ParseToCommonds(int order = 0)
     {
-        //TODO
-        CodeItemBase[] items = null;
-
-        return items;
+        Dictionary<CodeItemBase, int> codeDic = new Dictionary<CodeItemBase, int>();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var item = transform.GetChild(i);
+            if (item.GetComponent<CodeItemBase>())
+                codeDic.Add(item.GetComponent<CodeItemBase>(), order);
+            else
+            {
+                var tempdic = item.GetComponentInChildren<CodeContent>().ParseToCommonds(order + 1);
+                foreach (var temp in tempdic) codeDic.Add(temp.Key, temp.Value);
+            }
+        }
+        return codeDic;
     }	
 }

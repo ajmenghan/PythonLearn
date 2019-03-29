@@ -96,8 +96,11 @@
      <Compile Include="Assets\Scripts\codeItem\CodeItemBase.cs" />
      <Compile Include="Assets\Scripts\codeItem\FuncCodeItem.cs" />
      <Compile Include="Assets\Scripts\codeItem\InstructionItem.cs" />
+     <Compile Include="Assets\Scripts\codeItem\ModCodeItem.cs" />
+     <Compile Include="Assets\Scripts\codeItem\VarCodeItem.cs" />
      <Compile Include="Assets\Scripts\Custom\Commands.cs" />
      <Compile Include="Assets\Scripts\Custom\DataControl.cs" />
+     <Compile Include="Assets\Scripts\Custom\Enemy.cs" />
      <Compile Include="Assets\Scripts\Custom\GlobalValue.cs" />
      <Compile Include="Assets\Scripts\Custom\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\UI\ChoosePanel.cs" />

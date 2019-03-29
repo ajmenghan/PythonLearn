@@ -89,7 +89,6 @@ GameObject:
   - component: {fileID: 222628790421842782}
   - component: {fileID: 114413197993974438}
   - component: {fileID: 114908079236625538}
-  - component: {fileID: 114188928721585414}
   m_Layer: 5
   m_Name: codeItem
   m_TagString: CodeItem
@@ -127,7 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a621478cc09f14cbb2eae2f3bfbc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paraInputField: {fileID: 0}
 --- !u!114 &114096530549317036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.06666667}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -155,21 +153,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114188928721585414
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1743163823257700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e47723175bdb1f4bb3eab998ad1d892, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  codeId: 0
-  codeBody: hero.moveUp
-  itype: 0
-  bNeedPara: 1
 --- !u!114 &114378511653092260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -348,7 +331,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114188928721585414}
+      - m_Target: {fileID: 0}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
