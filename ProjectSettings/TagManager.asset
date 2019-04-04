@@ -8,6 +8,7 @@ TagManager:
   - Jump
   - MapTile
   - CodeItem
+  - Road
   layers:
   - Default
   - TransparentFX

@@ -35,13 +35,24 @@ public class PlayerControl : MonoBehaviour {
         bMove = true;
         Commands.Instance.bOperate = bMove;
     }
-    public void Move(Vector2Int tar)
+    public void Move(Vector2Int[] path)
     {
-        Vector2Int[] points = new Vector2Int[2];
-        points[0].x = (tar.x> 0 ? 2 : 3);
-        points[0].y = Mathf.Abs(tar.x);
-        points[1].x = (tar.y > 0 ? 0 : 1);
-        points[1].y = Mathf.Abs(tar.y);
+        Vector2Int[] points = new Vector2Int[path.Length - 1];
+        if (points.Length == 0) return;
+        for (int i = 0; i < points.Length; i++)
+        {
+            int tx = path[i + 1].x - path[i].x,
+                ty = path[i + 1].y - path[i].y;
+            if(tx!=0)
+            {
+                points[i].x = (tx > 0 ? 2 : 3);
+                points[i].y = Mathf.Abs(tx);
+            }else if(ty!=0)
+            {
+                points[i].x = (ty > 0 ? 0 : 1);
+                points[i].y = Mathf.Abs(ty);
+            }
+        }
         StartCoroutine("move", points);
         bMove = true;
         Commands.Instance.bOperate = bMove;

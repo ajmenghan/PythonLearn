@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour {
     public void OnPerformBtnClick()
     {
         var itemsDic = CurrentCodeContent.ParseToCommonds();
-        Commands.Instance.Execute(itemsDic);
+        if(null != itemsDic)Commands.Instance.Execute(itemsDic);
     }
     //收起/打开编辑框
     public void OnCloseBtnClick()
