@@ -106,6 +106,7 @@
      <Compile Include="Assets\Scripts\Custom\Commands.cs" />
      <Compile Include="Assets\Scripts\Custom\DataControl.cs" />
      <Compile Include="Assets\Scripts\Custom\Enemy.cs" />
+     <Compile Include="Assets\Scripts\Custom\EnemySpawn.cs" />
      <Compile Include="Assets\Scripts\Custom\GameManager.cs" />
      <Compile Include="Assets\Scripts\Custom\GlobalValue.cs" />
      <Compile Include="Assets\Scripts\Custom\MapControl.cs" />

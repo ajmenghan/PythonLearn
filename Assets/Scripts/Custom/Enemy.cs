@@ -25,4 +25,9 @@ public class Enemy : MonoBehaviour {
         this.GetComponentInChildren<StatusBars>().SetHp(hp - hurt, 100);
         this.Attack();
     }
+    //死亡时调用
+    public void Death()
+    {
+
+    }
 }
